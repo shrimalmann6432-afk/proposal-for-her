@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>A Special Message For You 💌</title>
+  
+  <!-- Favicon Heart -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
+  
+  <!-- Google Fonts: Elegant and romantic typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Canvas for Dreamy Floating Hearts & Sparkles -->
+  <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Light Blobs for Dreamy Gradient Glow -->
+  <div class="glow-orb orb-1" aria-hidden="true"></div>
+  <div class="glow-orb orb-2" aria-hidden="true"></div>
+  <div class="glow-orb orb-3" aria-hidden="true"></div>
+
+  <!-- Music Control Button -->
+  <header class="top-bar">
+    <button id="musicToggleBtn" class="music-toggle-btn" aria-label="Toggle background music" title="Toggle romantic music">
+      <span class="music-icon" aria-hidden="true">
+        <!-- SVG Note Icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-svg">
+          <path d="M9 18V5l12-2v13"></path>
+          <circle cx="6" cy="18" r="3"></circle>
+          <circle cx="18" cy="16" r="3"></circle>
+        </svg>
+      </span>
+      <span class="music-bars" aria-hidden="true">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+      <span class="music-label" id="musicLabel">Music: Off</span>
+    </button>
+  </header>
+
+  <!-- Audio Element (Loads local romantic-music.mp3 or uses Web Audio fallback) -->
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="romantic-music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Main Experience Container -->
+  <main class="app-container">
+
+    <!-- ========================================== -->
+    <!-- SCREEN 1: WELCOME SCREEN                   -->
+    <!-- ========================================== -->
+    <section id="screenWelcome" class="screen screen-active" aria-labelledby="welcomeHeading">
+      <div class="glass-card welcome-card">
+        
+        <!-- Big Animated Beating Heart with Sparkles -->
+        <div class="hero-heart-wrapper">
+          <div class="pulse-ring"></div>
+          <div class="pulse-ring delay-1"></div>
+          <div class="hero-heart">
+            <svg viewBox="0 0 100 100" class="heart-svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ff758f"/>
+                  <stop offset="50%" stop-color="#ff4d6d"/>
+                  <stop offset="100%" stop-color="#c9184a"/>
+                </linearGradient>
+                <filter id="heartGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+              </defs>
+              <path fill="url(#heartGradient)" filter="url(#heartGlow)" d="M50,88.9 C22,64 6,45.5 6,28 C6,13.5 17.5,2 32,2 C40.2,2 48.1,5.9 50,12 C51.9,5.9 59.8,2 68,2 C82.5,2 94,13.5 94,28 C94,45.5 78,64 50,88.9 Z"/>
+            </svg>
+            <div class="heart-shine" aria-hidden="true"></div>
+          </div>
+          <!-- Little Floating Accent Hearts -->
+          <span class="mini-sparkle sparkle-1">✨</span>
+          <span class="mini-sparkle sparkle-2">💖</span>
+          <span class="mini-sparkle sparkle-3">✨</span>
+        </div>
+
+        <div class="welcome-text-group">
+          <span class="subtle-badge">A Little Surprise For You</span>
+          <h1 id="welcomeHeading" class="welcome-heading">Hey, Someone Special! 💗</h1>
+          <p id="welcomeSubtitle" class="welcome-subtitle">
+            I made something for you... Will you give me a little moment?
+          </p>
+        </div>
+
+        <button id="btnOpenSurprise" class="btn btn-primary btn-glow" type="button">
+          <span class="btn-text">Open Your Surprise</span>
+          <span class="btn-emoji" aria-hidden="true">💌</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SCREEN 2: MAIN PROPOSAL SCREEN             -->
+    <!-- ========================================== -->
+    <section id="screenProposal" class="screen screen-hidden" aria-labelledby="proposalHeading">
+      <div class="glass-card proposal-card">
+
+        <!-- Cute Interactive Teddy Bear Illustration -->
+        <div class="teddy-container" aria-label="Cute teddy bear holding a heart">
+          <div class="teddy-speech-bubble" id="teddySpeech" aria-live="polite">
+            <span id="teddySpeechText">I'm so nervous... but here goes! 🙈</span>
+          </div>
+
+          <div class="teddy-wrapper" id="teddyIllustration">
+            <svg viewBox="0 0 200 200" class="teddy-svg" aria-hidden="true">
+              <!-- Shadow -->
+              <ellipse cx="100" cy="188" rx="60" ry="8" fill="rgba(201, 24, 74, 0.15)"/>
+              
+              <!-- Ears -->
+              <circle cx="58" cy="58" r="24" fill="#d4a373"/>
+              <circle cx="58" cy="58" r="14" fill="#faedcd"/>
+              <circle cx="142" cy="58" r="24" fill="#d4a373"/>
+              <circle cx="142" cy="58" r="14" fill="#faedcd"/>
+              
+              <!-- Body -->
+              <ellipse cx="100" cy="136" rx="48" ry="46" fill="#dda15e"/>
+              <ellipse cx="100" cy="140" rx="32" ry="30" fill="#fefae0"/>
+              
+              <!-- Feet -->
+              <ellipse cx="64" cy="174" rx="18" ry="14" fill="#d4a373"/>
+              <ellipse cx="64" cy="173" rx="10" ry="8" fill="#faedcd"/>
+              <ellipse cx="136" cy="174" rx="18" ry="14" fill="#d4a373"/>
+              <ellipse cx="136" cy="173" rx="10" ry="8" fill="#faedcd"/>
+
+              <!-- Head -->
+              <circle cx="100" cy="94" r="46" fill="#dda15e"/>
+              
+              <!-- Muzzle -->
+              <ellipse cx="100" cy="106" rx="20" ry="15" fill="#fefae0"/>
+              <path d="M93 98 Q100 95 107 98 Q100 105 93 98 Z" fill="#603808"/>
+              <path d="M100 102 L100 110" stroke="#603808" stroke-width="2" stroke-linecap="round"/>
+              <path d="M94 110 Q100 115 106 110" fill="none" stroke="#603808" stroke-width="2" stroke-linecap="round"/>
+
+              <!-- Cute Eyes with Twinkle -->
+              <g class="teddy-eyes">
+                <circle cx="82" cy="88" r="6.5" fill="#281807"/>
+                <circle cx="84" cy="86" r="2.5" fill="#ffffff"/>
+                <circle cx="118" cy="88" r="6.5" fill="#281807"/>
+                <circle cx="120" cy="86" r="2.5" fill="#ffffff"/>
+              </g>
+
+              <!-- Blushing Cheeks -->
+              <circle cx="73" cy="104" r="8" fill="#ff758f" opacity="0.6"/>
+              <circle cx="127" cy="104" r="8" fill="#ff758f" opacity="0.6"/>
+
+              <!-- Little Ears Bow Ribbon -->
+              <path d="M52 42 Q60 48 56 56 Q48 50 52 42 Z" fill="#ff4d6d"/>
+              <path d="M68 44 Q60 50 64 58 Q72 52 68 44 Z" fill="#ff4d6d"/>
+              <circle cx="60" cy="50" r="4" fill="#ff8fa3"/>
+
+              <!-- Arms Holding Heart -->
+              <ellipse cx="64" cy="128" rx="15" ry="22" transform="rotate(30 64 128)" fill="#d4a373"/>
+              <ellipse cx="136" cy="128" rx="15" ry="22" transform="rotate(-30 136 128)" fill="#d4a373"/>
+
+              <!-- Teddy's Big Pulsing Heart in Hands -->
+              <g class="teddy-heart-group">
+                <path d="M100 152 C82 135 70 123 70 110 C70 100 78 92 88 92 C94 92 98 95 100 99 C102 95 106 92 112 92 C122 92 130 100 130 110 C130 123 118 135 100 152 Z" fill="url(#heartGradient)"/>
+                <ellipse cx="88" cy="102" rx="4" ry="2" transform="rotate(-30 88 102)" fill="#ffffff" opacity="0.6"/>
+              </g>
+
+              <!-- Little Paws Over Heart -->
+              <circle cx="78" cy="125" r="9" fill="#faedcd"/>
+              <circle cx="122" cy="125" r="9" fill="#faedcd"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Romantic Proposal Letter Content -->
+        <div class="proposal-content">
+          <h2 id="proposalHeading" class="proposal-heading">There's Something I've Been Meaning to Tell You...</h2>
+          
+          <div class="message-card">
+            <p id="proposalMessage" class="proposal-message">
+              Somewhere between our conversations, our laughs, and all those little moments, you became someone really special to me. I don't know exactly when it happened, but I realized that I wanted to be more than just your friend.<br><br>
+              So today, I decided to gather a little courage and ask you something that means a lot to me...
+            </p>
+          </div>
+
+          <!-- Big Proposal Question -->
+          <div class="question-container">
+            <span class="sparkle-ornament" aria-hidden="true">✦</span>
+            <h3 id="proposalQuestion" class="proposal-question">Will you be my girlfriend? 💖</h3>
+            <span class="sparkle-ornament" aria-hidden="true">✦</span>
+          </div>
+
+          <!-- Playful No-Button Feedback Message Banner -->
+          <div id="noResponseBanner" class="no-feedback-banner" aria-live="polite">
+            <span class="banner-icon">💌</span>
+            <span id="noResponseText" class="banner-text"></span>
+          </div>
+
+          <!-- Decision Buttons -->
+          <div class="buttons-row">
+            <!-- YES Button: Glowing, inviting, celebratory -->
+            <button id="btnYes" class="btn btn-yes btn-glow-pink" type="button">
+              <span class="btn-text">YES</span>
+              <span class="btn-emoji" aria-hidden="true">💖</span>
+            </button>
+
+            <!-- NO Button: Playful, fully clickable, never runs away or guilt trips -->
+            <button id="btnNo" class="btn btn-no" type="button">
+              <span class="btn-text">NO</span>
+              <span class="btn-emoji" aria-hidden="true">🙈</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- SCREEN 3: CELEBRATION SCREEN               -->
+    <!-- ========================================== -->
+    <section id="screenCelebration" class="screen screen-hidden" aria-labelledby="celebrationHeading">
+      <div class="glass-card celebration-card">
+
+        <!-- Animated Crown/Heart Celebration Icon -->
+        <div class="celebration-hero">
+          <div class="burst-glow" aria-hidden="true"></div>
+          <div class="celebration-heart-icon">
+            <span class="star-burst star-tl">✨</span>
+            <span class="star-burst star-tr">🎉</span>
+            <span class="celebration-emoji">🥰</span>
+            <span class="star-burst star-bl">💖</span>
+            <span class="star-burst star-br">✨</span>
+          </div>
+        </div>
+
+        <h2 id="celebrationHeading" class="celebration-heading">YOU JUST MADE MY DAY! ❤️</h2>
+
+        <div class="celebration-body">
+          <p id="celebrationMessage" class="celebration-message">
+            I don't know what the future holds, but I'm really happy that we get to explore this feeling together. Thank you for giving me this chance. Let's make some beautiful memories! 💖
+          </p>
+
+          <div class="story-tagline">
+            <span class="tagline-icon" aria-hidden="true">🌸</span>
+            <span id="storyTaglineText" class="tagline-text">This is the beginning of our little story... 💌</span>
+            <span class="tagline-icon" aria-hidden="true">🌸</span>
+          </div>
+        </div>
+
+        <!-- Action Row -->
+        <div class="celebration-actions">
+          <button id="btnReadFinalNote" class="btn btn-final-note btn-glow-lavender" type="button">
+            <span class="btn-text">Read One Last Thing</span>
+            <span class="btn-emoji" aria-hidden="true">💗</span>
+          </button>
+          
+          <button id="btnReplay" class="btn btn-secondary btn-replay" type="button" title="Revisit this journey from the beginning">
+            <span class="btn-icon" aria-hidden="true">↺</span>
+            <span class="btn-text">Replay Experience</span>
+          </button>
+        </div>
+
+        <!-- Pop-in Final Note Reveal Card -->
+        <div id="finalNoteModal" class="final-note-card hidden" aria-live="polite">
+          <div class="final-note-inner">
+            <div class="envelope-stamp">💌</div>
+            <h4 class="final-note-title">From the Bottom of My Heart</h4>
+            <p id="finalNoteText" class="final-note-text">
+              No matter what happens, I'm grateful that I found someone as special as you. Thank you for being part of my life. ❤️
+            </p>
+            <div class="final-signature">
+              <span class="signature-with">With all my love,</span>
+              <span id="signatureName" class="signature-name">Your Friend</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Sweet Persistent Footer -->
+  <footer class="app-footer">
+    <p>Made with <span class="heart-pulse" aria-label="love">❤️</span>, just for you.</p>
+  </footer>
+
+  <!-- Script File -->
+  <script src="script.js"></script>
+</body>
+</html>
